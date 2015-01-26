@@ -10,11 +10,14 @@ import org.newdawn.slick.util.ResourceLoader;
 public class TextureBank {
 
 	public static Texture BRICKS = loadTexture("assets/images/bricks.png");
-	public static Texture STONE = loadTexture("assets/images/stone.png");
+	public static Texture STONE = loadTexture("assets/images/stane.png");
 	public static Texture GRASS = loadTexture("assets/images/grass.png");
+	public static Texture DIRT = loadTexture("assets/images/dirt.png");
 	public static Texture SAND = loadTexture("assets/images/sand.png");
 	
 	public static Texture BURGER = loadTexture("assets/images/bak.png");
+	
+	public static Texture FLOWER = loadTexture("assets/images/flower.png");
 	
 	public static Texture loadTexture(String path){
 		Texture t = null;

@@ -7,8 +7,11 @@ public abstract class Instance {
 
 	public float x,y,z = 0f;
 	public Sprite3D sprite = new Sprite3D();
+	public float xrot = 0;
+	public float yrot = 0;
+	public float zrot = 180;
 	
-	public Vector3f collisionSize = new Vector3f(1,1,1);
+	public Vector3f collisionSize = new Vector3f(0.5f,0.5f,0.5f);
 	
 	public Instance(float x, float y, float z){
 		this.x = x;
@@ -26,11 +29,14 @@ public abstract class Instance {
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef(x, y, z);
+		GL11.glRotatef(xrot, 1, 0, 0);
+		GL11.glRotatef(yrot, 0, 1, 0);
+		GL11.glRotatef(zrot, 0, 0, 1);
 		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
 		if(sprite.images.size() > 0)
-		sprite.draw(sprite.getCurrentImage().getImageWidth(),sprite.getCurrentImage().getImageHeight());
+		sprite.draw(collisionSize.x,collisionSize.z);
 		
 		GL11.glTranslatef(-x, -y, -z);
 		

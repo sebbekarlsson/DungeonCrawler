@@ -1,19 +1,24 @@
 package dungeoncrawler.main;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import dungeoncrawler.main.instances.Block;
-import dungeoncrawler.main.instances.TestModel;
+import dungeoncrawler.main.instances.Flower;
+
 
 public class Chunk {
 	public int x,z = 0;
-	public Block[][][] blocks = new Block[16][16][16];
+	public Block[][][] blocks = new Block[16][256][16];
 	private boolean init = true;
+	public BufferedImage img;
 	Random random = new Random();
 
-	public Chunk(int x, int z){
+	public Chunk(int x, int z, BufferedImage img){
 		this.x = x;
 		this.z = z;
+		this.img = img;
 	}
 
 
@@ -35,28 +40,24 @@ public class Chunk {
 	}
 
 	public void init(){
-		generateAir();
-		
-	
 
-		for(int x = 0; x < blocks.length; x++){
+		for(int x = 0; x < img.getWidth(); x++){
 
-			for(int z = 0; z < blocks[x].length; z++){
-				blocks[x][0][z] = new Block(this.x+x,0,this.z+z,BlockType.STONE,this);
-				if(random.nextInt(100) == 0){
-					Main.getCurrentScene().instantiateInstance(new TestModel(this.x+x,3,this.z+z));
+			for(int z = 0; z < img.getHeight(); z++){
+				Color color = new Color(img.getRGB(x, z));
+				int r = color.getRed();
+				int g = color.getGreen();
+				int b = color.getBlue();
+				
+				blocks[x][g][z].type = BlockType.GRASS;
+			
+				for(int depth = g-1; depth > 50; depth -=1){
+					blocks[x][depth][z].type = BlockType.GRASS;
 				}
 			}
 
 		}
-		
-		for(int x = 0; x < blocks.length; x++){
-
-			for(int z = 0; z < blocks[x].length; z++){
-				blocks[x][5][z] = new Block(this.x+x,5,this.z+z,BlockType.STONE,this);
-			}
-
-		}
+	
 
 
 	}
@@ -80,57 +81,8 @@ public class Chunk {
 			}
 		}
 
-		for(int x = 0; x < blocks.length; x++){
-			for(int z = 0; z < blocks[x].length; z++){
-
-				int w = Math.max(4, random.nextInt(16));
-				int h = Math.max(4, random.nextInt(16));
-				Slice slice = new Slice(x*w,z*h,w,h);
-				slice.build();
-			
-			}
-		}
 	}
 
-	public class Slice{
-		int width;
-		int height;
-		int x;
-		int y;
-
-		public Slice(int x,int y,int width, int height){
-			this.x = x;
-			this.y = y;
-
-			this.width = width;
-			this.height = height;
-		}
-
-		public void build(){
-			for(int x = 0; x < width; x++){
-				for(int y = 0; y < height; y++){
-					BlockType type = BlockType.BRICK;
-					if(x >= 1 && x < width-1 && y >= 1 && y < height-1){
-						type = BlockType.AIR;
-					}else{
-						for(int h = 1; h < 5; h++)
-							blocks[Math.min(15, this.x+x)][h][Math.min(15, this.y+y)].type = type;
-					
-						if(random.nextInt(3) == 0){
-							for(int h = 1; h < 5; h++){
-							blocks[Math.min(15, this.x+x)][h][Math.min(15, this.y+y)].type = BlockType.AIR;
-							blocks[Math.min(15, this.x+x+1)][h][Math.min(15, this.y+y+1)].type = BlockType.AIR;
-							}
-						}
-					}
-					
-				}
-			}
-			
-			
-			
-			
-		}
-	}
+	
 
 }

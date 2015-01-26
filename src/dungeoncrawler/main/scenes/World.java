@@ -11,19 +11,15 @@ import dungeoncrawler.main.WorldGenerator;
 
 public class World extends Scene {
 
+	WorldGenerator generator = new WorldGenerator();
 	public Chunk[][] chunks = new Chunk[WorldGenerator.worldSize][WorldGenerator.worldSize];
 
 	public World(){
 		camera.x = 5;
 		camera.z = 9;
-		camera.y = 3f;
+		camera.y = 120f;
 		
-		for(int x = 0; x < chunks.length; x++){
-			for(int z = 0; z < chunks[x].length; z++){
-				chunks[x][z] = new Chunk(x*16,z*16);
-				
-			}
-		}
+		generator.generateWorld(this);
 	}
 
 	public void update(){
